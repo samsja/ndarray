@@ -9,6 +9,7 @@
 use crate::dimension::DimMax;
 use crate::Zip;
 use num_complex::Complex;
+use half::{f16, bf16};
 
 /// Elements that can be used as direct operands in arithmetic with arrays.
 ///
@@ -49,6 +50,8 @@ impl ScalarOperand for f32 {}
 impl ScalarOperand for f64 {}
 impl ScalarOperand for Complex<f32> {}
 impl ScalarOperand for Complex<f64> {}
+impl ScalarOperand for f16 {}
+impl ScalarOperand for bf16 {}
 
 macro_rules! impl_binary_op(
     ($trt:ident, $operator:tt, $mth:ident, $iop:tt, $doc:expr) => (
@@ -356,6 +359,19 @@ mod arithmetic_ops {
     impl_scalar_lhs_op!(f64, Commute, *, Mul, mul, "multiplication");
     impl_scalar_lhs_op!(f64, Ordered, /, Div, div, "division");
     impl_scalar_lhs_op!(f64, Ordered, %, Rem, rem, "remainder");
+
+    impl_scalar_lhs_op!(f16, Commute, +, Add, add, "addition");
+    impl_scalar_lhs_op!(f16, Ordered, -, Sub, sub, "subtraction");
+    impl_scalar_lhs_op!(f16, Commute, *, Mul, mul, "multiplication");
+    impl_scalar_lhs_op!(f16, Ordered, /, Div, div, "division");
+    impl_scalar_lhs_op!(f16, Ordered, %, Rem, rem, "remainder");
+
+    impl_scalar_lhs_op!(bf16, Commute, +, Add, add, "addition");
+    impl_scalar_lhs_op!(bf16, Ordered, -, Sub, sub, "subtraction");
+    impl_scalar_lhs_op!(bf16, Commute, *, Mul, mul, "multiplication");
+    impl_scalar_lhs_op!(bf16, Ordered, /, Div, div, "division");
+    impl_scalar_lhs_op!(bf16, Ordered, %, Rem, rem, "remainder");
+
 
     impl_scalar_lhs_op!(Complex<f32>, Commute, +, Add, add, "addition");
     impl_scalar_lhs_op!(Complex<f32>, Ordered, -, Sub, sub, "subtraction");
